@@ -1,0 +1,33 @@
+{
+  "originHash" : "1289d674ed36f84696a18fc718e8d67749a33218318e1fa25e100f51713122fd",
+  "pins" : [
+    {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections",
+      "state" : {
+        "revision" : "7b847a3b7008b2dc2f47ca3110d8c782fb2e5c7e",
+        "version" : "1.3.0"
+      }
+    },
+    {
+      "identity" : "swift-rfc-1035",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swift-standards/swift-rfc-1035.git",
+      "state" : {
+        "revision" : "db0ff72b9269e6953e5238b1a423928acf6666a5",
+        "version" : "0.1.0"
+      }
+    },
+    {
+      "identity" : "swift-rfc-1123",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swift-standards/swift-rfc-1123.git",
+      "state" : {
+        "revision" : "8ffc4e8d48d55f80381dddb227d88dfc6042c833",
+        "version" : "0.2.0"
+      }
+    }
+  ],
+  "version" : 3
+}
