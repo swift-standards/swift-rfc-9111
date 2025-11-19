@@ -1,7 +1,6 @@
 // HTTP.Cache.ReuseConditions.swift
 // swift-rfc-9111
 
-public 
 extension RFC_9110.Cache {
     /// Response reuse conditions implementing RFC 9111 Section 4
     public enum ReuseConditions {
