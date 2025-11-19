@@ -4,56 +4,56 @@
 import Testing
 @testable import RFC_9111
 
-@Suite("HTTP.Age Tests")
-struct HTTPAgeTests {
+@Suite
+struct `HTTP.Age Tests` {
 
-    @Test("Age creation with valid seconds")
-    func ageCreation() async throws {
+    @Test
+    func `Age creation with valid seconds`() async throws {
         let age = HTTP.Age(seconds: 120)
 
         #expect(age.seconds == 120)
     }
 
-    @Test("Age creation with zero")
-    func ageCreationZero() async throws {
+    @Test
+    func `Age creation with zero`() async throws {
         let age = HTTP.Age(seconds: 0)
 
         #expect(age.seconds == 0)
     }
 
-    @Test("Header value format")
-    func headerValueFormat() async throws {
+    @Test
+    func `Header value format`() async throws {
         let age = HTTP.Age(seconds: 120)
 
         #expect(age.headerValue == "120")
     }
 
-    @Test("Parse valid age")
-    func parseValidAge() async throws {
+    @Test
+    func `Parse valid age`() async throws {
         let parsed = HTTP.Age.parse("120")
 
         #expect(parsed != nil)
         #expect(parsed?.seconds == 120)
     }
 
-    @Test("Parse age with whitespace")
-    func parseWithWhitespace() async throws {
+    @Test
+    func `Parse age with whitespace`() async throws {
         let parsed = HTTP.Age.parse("  120  ")
 
         #expect(parsed != nil)
         #expect(parsed?.seconds == 120)
     }
 
-    @Test("Parse invalid age")
-    func parseInvalidAge() async throws {
+    @Test
+    func `Parse invalid age`() async throws {
         #expect(HTTP.Age.parse("invalid") == nil)
         #expect(HTTP.Age.parse("") == nil)
         #expect(HTTP.Age.parse("-5") == nil) // Negative ages invalid
         #expect(HTTP.Age.parse("120.5") == nil) // No decimals
     }
 
-    @Test("Equality")
-    func equality() async throws {
+    @Test
+    func `Equality`() async throws {
         let age1 = HTTP.Age(seconds: 120)
         let age2 = HTTP.Age(seconds: 120)
         let age3 = HTTP.Age(seconds: 121)
@@ -62,8 +62,8 @@ struct HTTPAgeTests {
         #expect(age1 != age3)
     }
 
-    @Test("Hashable")
-    func hashable() async throws {
+    @Test
+    func `Hashable`() async throws {
         var set: Set<HTTP.Age> = []
 
         set.insert(HTTP.Age(seconds: 120))
@@ -73,8 +73,8 @@ struct HTTPAgeTests {
         #expect(set.count == 2)
     }
 
-    @Test("Comparable")
-    func comparable() async throws {
+    @Test
+    func `Comparable`() async throws {
         let younger = HTTP.Age(seconds: 100)
         let older = HTTP.Age(seconds: 200)
 
@@ -82,8 +82,8 @@ struct HTTPAgeTests {
         #expect(older > younger)
     }
 
-    @Test("Codable")
-    func codable() async throws {
+    @Test
+    func `Codable`() async throws {
         let encoder = JSONEncoder()
         let decoder = JSONDecoder()
 
@@ -94,15 +94,15 @@ struct HTTPAgeTests {
         #expect(decoded == age)
     }
 
-    @Test("Description")
-    func description() async throws {
+    @Test
+    func `Description`() async throws {
         let age = HTTP.Age(seconds: 120)
 
         #expect(age.description == "120")
     }
 
-    @Test("LosslessStringConvertible")
-    func losslessStringConvertible() async throws {
+    @Test
+    func `LosslessStringConvertible`() async throws {
         let age = HTTP.Age("120")
 
         #expect(age != nil)
@@ -110,15 +110,15 @@ struct HTTPAgeTests {
         #expect(String(age!) == "120")
     }
 
-    @Test("ExpressibleByIntegerLiteral")
-    func expressibleByIntegerLiteral() async throws {
+    @Test
+    func `ExpressibleByIntegerLiteral`() async throws {
         let age: HTTP.Age = 120
 
         #expect(age.seconds == 120)
     }
 
-    @Test("Round trip - format and parse")
-    func roundTrip() async throws {
+    @Test
+    func `Round trip - format and parse`() async throws {
         let original = HTTP.Age(seconds: 120)
         let headerValue = original.headerValue
         let parsed = HTTP.Age.parse(headerValue)

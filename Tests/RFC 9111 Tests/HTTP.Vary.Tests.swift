@@ -4,41 +4,41 @@
 import Testing
 @testable import RFC_9111
 
-@Suite("HTTP.Vary Tests")
-struct HTTPVaryTests {
+@Suite
+struct `HTTP.Vary Tests` {
 
-    @Test("Vary creation with field names")
-    func varyCreation() async throws {
+    @Test
+    func `Vary creation with field names`() async throws {
         let vary = HTTP.Vary(fieldNames: ["Accept-Encoding", "Accept-Language"])
 
         #expect(vary.fieldNames == ["accept-encoding", "accept-language"]) // Lowercased
         #expect(!vary.variesOnAllAspects)
     }
 
-    @Test("Vary.all - varies on all aspects")
-    func varyAll() async throws {
+    @Test
+    func `Vary.all - varies on all aspects`() async throws {
         let vary = HTTP.Vary.all
 
         #expect(vary.fieldNames.isEmpty)
         #expect(vary.variesOnAllAspects)
     }
 
-    @Test("Header value - field names")
-    func headerValueFieldNames() async throws {
+    @Test
+    func `Header value - field names`() async throws {
         let vary = HTTP.Vary(fieldNames: ["Accept-Encoding", "Accept-Language"])
 
         #expect(vary.headerValue == "accept-encoding, accept-language")
     }
 
-    @Test("Header value - all aspects")
-    func headerValueAll() async throws {
+    @Test
+    func `Header value - all aspects`() async throws {
         let vary = HTTP.Vary.all
 
         #expect(vary.headerValue == "*")
     }
 
-    @Test("Parse field names")
-    func parseFieldNames() async throws {
+    @Test
+    func `Parse field names`() async throws {
         let parsed = HTTP.Vary.parse("Accept-Encoding, User-Agent")
 
         #expect(parsed != nil)
@@ -46,30 +46,30 @@ struct HTTPVaryTests {
         #expect(parsed?.variesOnAllAspects == false)
     }
 
-    @Test("Parse all aspects")
-    func parseAllAspects() async throws {
+    @Test
+    func `Parse all aspects`() async throws {
         let parsed = HTTP.Vary.parse("*")
 
         #expect(parsed != nil)
         #expect(parsed?.variesOnAllAspects == true)
     }
 
-    @Test("Parse with whitespace")
-    func parseWithWhitespace() async throws {
+    @Test
+    func `Parse with whitespace`() async throws {
         let parsed = HTTP.Vary.parse("  Accept-Encoding ,  User-Agent  ")
 
         #expect(parsed != nil)
         #expect(parsed?.fieldNames == ["accept-encoding", "user-agent"])
     }
 
-    @Test("Parse empty string")
-    func parseEmpty() async throws {
+    @Test
+    func `Parse empty string`() async throws {
         #expect(HTTP.Vary.parse("") == nil)
         #expect(HTTP.Vary.parse("  ") == nil)
     }
 
-    @Test("includes - field name present")
-    func includesPresent() async throws {
+    @Test
+    func `includes - field name present`() async throws {
         let vary = HTTP.Vary(fieldNames: ["Accept-Encoding", "User-Agent"])
 
         #expect(vary.includes("Accept-Encoding"))
@@ -77,16 +77,16 @@ struct HTTPVaryTests {
         #expect(vary.includes("User-Agent"))
     }
 
-    @Test("includes - field name absent")
-    func includesAbsent() async throws {
+    @Test
+    func `includes - field name absent`() async throws {
         let vary = HTTP.Vary(fieldNames: ["Accept-Encoding"])
 
         #expect(!vary.includes("Cookie"))
         #expect(!vary.includes("User-Agent"))
     }
 
-    @Test("includes - all aspects")
-    func includesAllAspects() async throws {
+    @Test
+    func `includes - all aspects`() async throws {
         let vary = HTTP.Vary.all
 
         #expect(vary.includes("Accept-Encoding"))
@@ -94,8 +94,8 @@ struct HTTPVaryTests {
         #expect(vary.includes("anything"))
     }
 
-    @Test("matches - same headers")
-    func matchesSameHeaders() async throws {
+    @Test
+    func `matches - same headers`() async throws {
         let vary = HTTP.Vary(fieldNames: ["Accept-Encoding"])
 
         let result = vary.matches(
@@ -106,8 +106,8 @@ struct HTTPVaryTests {
         #expect(result == true)
     }
 
-    @Test("matches - different headers")
-    func matchesDifferentHeaders() async throws {
+    @Test
+    func `matches - different headers`() async throws {
         let vary = HTTP.Vary(fieldNames: ["Accept-Encoding"])
 
         let result = vary.matches(
@@ -118,8 +118,8 @@ struct HTTPVaryTests {
         #expect(result == false)
     }
 
-    @Test("matches - all aspects never matches")
-    func matchesAllAspects() async throws {
+    @Test
+    func `matches - all aspects never matches`() async throws {
         let vary = HTTP.Vary.all
 
         let result = vary.matches(
@@ -130,8 +130,8 @@ struct HTTPVaryTests {
         #expect(result == false)
     }
 
-    @Test("matches - multiple fields")
-    func matchesMultipleFields() async throws {
+    @Test
+    func `matches - multiple fields`() async throws {
         let vary = HTTP.Vary(fieldNames: ["Accept-Encoding", "User-Agent"])
 
         let result1 = vary.matches(
@@ -147,8 +147,8 @@ struct HTTPVaryTests {
         #expect(result2 == false)
     }
 
-    @Test("Equality")
-    func equality() async throws {
+    @Test
+    func `Equality`() async throws {
         let vary1 = HTTP.Vary(fieldNames: ["Accept-Encoding"])
         let vary2 = HTTP.Vary(fieldNames: ["Accept-Encoding"])
         let vary3 = HTTP.Vary(fieldNames: ["User-Agent"])
@@ -159,8 +159,8 @@ struct HTTPVaryTests {
         #expect(vary1 != vary4)
     }
 
-    @Test("Hashable")
-    func hashable() async throws {
+    @Test
+    func `Hashable`() async throws {
         var set: Set<HTTP.Vary> = []
 
         set.insert(HTTP.Vary(fieldNames: ["Accept-Encoding"]))
@@ -171,8 +171,8 @@ struct HTTPVaryTests {
         #expect(set.count == 3)
     }
 
-    @Test("Codable")
-    func codable() async throws {
+    @Test
+    func `Codable`() async throws {
         let encoder = JSONEncoder()
         let decoder = JSONDecoder()
 
@@ -183,30 +183,30 @@ struct HTTPVaryTests {
         #expect(decoded == vary)
     }
 
-    @Test("Description")
-    func description() async throws {
+    @Test
+    func `Description`() async throws {
         let vary = HTTP.Vary(fieldNames: ["Accept-Encoding"])
 
         #expect(vary.description == "accept-encoding")
     }
 
-    @Test("LosslessStringConvertible")
-    func losslessStringConvertible() async throws {
+    @Test
+    func `LosslessStringConvertible`() async throws {
         let vary = HTTP.Vary("Accept-Encoding, User-Agent")
 
         #expect(vary != nil)
         #expect(vary?.fieldNames == ["accept-encoding", "user-agent"])
     }
 
-    @Test("ExpressibleByArrayLiteral")
-    func expressibleByArrayLiteral() async throws {
+    @Test
+    func `ExpressibleByArrayLiteral`() async throws {
         let vary: HTTP.Vary = ["Accept-Encoding", "User-Agent"]
 
         #expect(vary.fieldNames == ["accept-encoding", "user-agent"])
     }
 
-    @Test("Round trip - format and parse")
-    func roundTrip() async throws {
+    @Test
+    func `Round trip - format and parse`() async throws {
         let original = HTTP.Vary(fieldNames: ["Accept-Encoding", "User-Agent"])
         let headerValue = original.headerValue
         let parsed = HTTP.Vary.parse(headerValue)

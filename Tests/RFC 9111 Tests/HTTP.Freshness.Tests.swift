@@ -4,11 +4,11 @@
 import Testing
 @testable import RFC_9111
 
-@Suite("HTTP.Freshness Tests")
-struct HTTPFreshnessTests {
+@Suite
+struct `HTTP.Freshness Tests` {
 
-    @Test("calculateFreshnessLifetime - max-age")
-    func calculateFreshnessLifetimeMaxAge() async throws {
+    @Test
+    func `calculateFreshnessLifetime - max-age`() async throws {
         let response = HTTP.Response(
             status: .ok,
             headers: [
@@ -21,8 +21,8 @@ struct HTTPFreshnessTests {
         #expect(lifetime == 3600)
     }
 
-    @Test("calculateFreshnessLifetime - s-maxage for shared cache")
-    func calculateFreshnessLifetimeSMaxage() async throws {
+    @Test
+    func `calculateFreshnessLifetime - s-maxage for shared cache`() async throws {
         let response = HTTP.Response(
             status: .ok,
             headers: [
@@ -38,8 +38,8 @@ struct HTTPFreshnessTests {
         #expect(lifetime == 7200) // s-maxage takes precedence for shared caches
     }
 
-    @Test("calculateFreshnessLifetime - s-maxage ignored for private cache")
-    func calculateFreshnessLifetimeSMaxagePrivate() async throws {
+    @Test
+    func `calculateFreshnessLifetime - s-maxage ignored for private cache`() async throws {
         let response = HTTP.Response(
             status: .ok,
             headers: [
@@ -55,8 +55,8 @@ struct HTTPFreshnessTests {
         #expect(lifetime == 3600) // s-maxage ignored for private caches
     }
 
-    @Test("calculateFreshnessLifetime - Expires header")
-    func calculateFreshnessLifetimeExpires() async throws {
+    @Test
+    func `calculateFreshnessLifetime - Expires header`() async throws {
         let date = Date()
         let expiresDate = date.addingTimeInterval(3600)
 
@@ -74,8 +74,8 @@ struct HTTPFreshnessTests {
         #expect(lifetime < 3650)
     }
 
-    @Test("calculateFreshnessLifetime - max-age overrides Expires")
-    func calculateFreshnessLifetimeMaxAgeOverridesExpires() async throws {
+    @Test
+    func `calculateFreshnessLifetime - max-age overrides Expires`() async throws {
         let date = Date()
         let expiresDate = date.addingTimeInterval(7200)
 
@@ -93,8 +93,8 @@ struct HTTPFreshnessTests {
         #expect(lifetime == 3600) // max-age takes precedence
     }
 
-    @Test("calculateFreshnessLifetime - no freshness info")
-    func calculateFreshnessLifetimeNoInfo() async throws {
+    @Test
+    func `calculateFreshnessLifetime - no freshness info`() async throws {
         let response = HTTP.Response(
             status: .ok,
             headers: []
@@ -105,8 +105,8 @@ struct HTTPFreshnessTests {
         #expect(lifetime == 0)
     }
 
-    @Test("calculateAge - with Age header")
-    func calculateAgeWithAgeHeader() async throws {
+    @Test
+    func `calculateAge - with Age header`() async throws {
         let response = HTTP.Response(
             status: .ok,
             headers: [
@@ -120,8 +120,8 @@ struct HTTPFreshnessTests {
         #expect(age >= 120)
     }
 
-    @Test("calculateAge - without Age header")
-    func calculateAgeWithoutAgeHeader() async throws {
+    @Test
+    func `calculateAge - without Age header`() async throws {
         let now = Date()
         let responseTime = now.addingTimeInterval(-300) // Received 5 minutes ago
         let pastDate = now.addingTimeInterval(-310) // Date header 10 seconds before response
@@ -143,8 +143,8 @@ struct HTTPFreshnessTests {
         #expect(age <= 320)
     }
 
-    @Test("calculateAge - with request and response times")
-    func calculateAgeWithTimes() async throws {
+    @Test
+    func `calculateAge - with request and response times`() async throws {
         let now = Date()
         let requestTime = now.addingTimeInterval(-10)
         let responseTime = now.addingTimeInterval(-5)
@@ -167,8 +167,8 @@ struct HTTPFreshnessTests {
         #expect(age > 0)
     }
 
-    @Test("isFresh - fresh response")
-    func isFreshTrue() async throws {
+    @Test
+    func `isFresh - fresh response`() async throws {
         let response = HTTP.Response(
             status: .ok,
             headers: [
@@ -180,8 +180,8 @@ struct HTTPFreshnessTests {
         #expect(HTTP.Freshness.isFresh(response: response))
     }
 
-    @Test("isFresh - stale response")
-    func isFreshFalse() async throws {
+    @Test
+    func `isFresh - stale response`() async throws {
         let now = Date()
         let responseTime = now.addingTimeInterval(-7200) // Received 2 hours ago
 
@@ -200,8 +200,8 @@ struct HTTPFreshnessTests {
         ))
     }
 
-    @Test("isFresh - with custom times")
-    func isFreshCustomTimes() async throws {
+    @Test
+    func `isFresh - with custom times`() async throws {
         let responseTime = Date(timeIntervalSince1970: 1000000)
         let now = Date(timeIntervalSince1970: 1004000) // 4000 seconds later (exceeds max-age of 3600)
 
@@ -220,8 +220,8 @@ struct HTTPFreshnessTests {
         ))
     }
 
-    @Test("staleDate - valid lifetime")
-    func staleDateValid() async throws {
+    @Test
+    func `staleDate - valid lifetime`() async throws {
         let responseTime = Date()
 
         let response = HTTP.Response(
@@ -244,8 +244,8 @@ struct HTTPFreshnessTests {
         #expect(diff < 1.0)
     }
 
-    @Test("staleDate - zero lifetime")
-    func staleDateZeroLifetime() async throws {
+    @Test
+    func `staleDate - zero lifetime`() async throws {
         let responseTime = Date()
 
         let response = HTTP.Response(
@@ -261,8 +261,8 @@ struct HTTPFreshnessTests {
         #expect(staleDate == nil)
     }
 
-    @Test("calculateHeuristicFreshness - with Last-Modified")
-    func calculateHeuristicFreshnessValid() async throws {
+    @Test
+    func `calculateHeuristicFreshness - with Last-Modified`() async throws {
         let now = Date()
         let lastModified = now.addingTimeInterval(-864000) // 10 days ago
 
@@ -281,8 +281,8 @@ struct HTTPFreshnessTests {
         #expect(heuristicFreshness <= 86400) // Capped at 24 hours
     }
 
-    @Test("calculateHeuristicFreshness - without Last-Modified")
-    func calculateHeuristicFreshnessNoLastModified() async throws {
+    @Test
+    func `calculateHeuristicFreshness - without Last-Modified`() async throws {
         let response = HTTP.Response(
             status: .ok,
             headers: [
@@ -295,8 +295,8 @@ struct HTTPFreshnessTests {
         #expect(heuristicFreshness == 0)
     }
 
-    @Test("calculateHeuristicFreshness - capped at 24 hours")
-    func calculateHeuristicFreshnessCapped() async throws {
+    @Test
+    func `calculateHeuristicFreshness - capped at 24 hours`() async throws {
         let now = Date()
         let lastModified = now.addingTimeInterval(-8640000) // 100 days ago
 
@@ -314,8 +314,8 @@ struct HTTPFreshnessTests {
         #expect(heuristicFreshness == 86400)
     }
 
-    @Test("Freshness with heuristics allowed")
-    func freshnessWithHeuristics() async throws {
+    @Test
+    func `Freshness with heuristics allowed`() async throws {
         let now = Date()
         let lastModified = now.addingTimeInterval(-864000) // 10 days ago
 
