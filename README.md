@@ -182,7 +182,7 @@ let lifetime = HTTP.Freshness.calculateFreshnessLifetime(
 
 ```swift
 dependencies: [
-    .package(path: "../swift-rfc-9111")
+    .package(url: "https://github.com/swift-standards/swift-rfc-9111", from: "0.1.0")
 ],
 targets: [
     .target(
