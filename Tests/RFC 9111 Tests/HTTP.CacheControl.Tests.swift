@@ -4,11 +4,11 @@
 import Testing
 @testable import RFC_9111
 
-@Suite("HTTP.CacheControl Tests")
-struct HTTPCacheControlTests {
+@Suite
+struct `HTTP.CacheControl Tests` {
 
-    @Test("CacheControl creation - empty")
-    func cacheControlCreation() async throws {
+    @Test
+    func `CacheControl creation - empty`() async throws {
         let cc = HTTP.CacheControl()
 
         #expect(cc.maxAge == nil)
@@ -17,16 +17,16 @@ struct HTTPCacheControlTests {
         #expect(cc.isPublic == false)
     }
 
-    @Test("Header value - maxAge")
-    func headerValueMaxAge() async throws {
+    @Test
+    func `Header value - maxAge`() async throws {
         var cc = HTTP.CacheControl()
         cc.maxAge = 3600
 
         #expect(cc.headerValue == "max-age=3600")
     }
 
-    @Test("Header value - multiple directives")
-    func headerValueMultiple() async throws {
+    @Test
+    func `Header value - multiple directives`() async throws {
         var cc = HTTP.CacheControl()
         cc.isPublic = true
         cc.maxAge = 3600
@@ -39,48 +39,48 @@ struct HTTPCacheControlTests {
         #expect(value.contains("must-revalidate"))
     }
 
-    @Test("Header value - noCache")
-    func headerValueNoCache() async throws {
+    @Test
+    func `Header value - noCache`() async throws {
         var cc = HTTP.CacheControl()
         cc.noCache = true
 
         #expect(cc.headerValue == "no-cache")
     }
 
-    @Test("Header value - noStore")
-    func headerValueNoStore() async throws {
+    @Test
+    func `Header value - noStore`() async throws {
         var cc = HTTP.CacheControl()
         cc.noStore = true
 
         #expect(cc.headerValue == "no-store")
     }
 
-    @Test("Header value - maxStale without value")
-    func headerValueMaxStaleNoValue() async throws {
+    @Test
+    func `Header value - maxStale without value`() async throws {
         var cc = HTTP.CacheControl()
         cc.maxStale = .some(nil)
 
         #expect(cc.headerValue == "max-stale")
     }
 
-    @Test("Header value - maxStale with value")
-    func headerValueMaxStaleWithValue() async throws {
+    @Test
+    func `Header value - maxStale with value`() async throws {
         var cc = HTTP.CacheControl()
         cc.maxStale = .some(.some(600))
 
         #expect(cc.headerValue == "max-stale=600")
     }
 
-    @Test("Header value - private without fields")
-    func headerValuePrivateNoFields() async throws {
+    @Test
+    func `Header value - private without fields`() async throws {
         var cc = HTTP.CacheControl()
         cc.private = .some(nil)
 
         #expect(cc.headerValue == "private")
     }
 
-    @Test("Header value - private with fields")
-    func headerValuePrivateWithFields() async throws {
+    @Test
+    func `Header value - private with fields`() async throws {
         var cc = HTTP.CacheControl()
         cc.private = .some(.some(["Set-Cookie", "Authorization"]))
 
@@ -89,86 +89,86 @@ struct HTTPCacheControlTests {
         #expect(cc.headerValue.contains("Authorization"))
     }
 
-    @Test("Parse - maxAge")
-    func parseMaxAge() async throws {
+    @Test
+    func `Parse - maxAge`() async throws {
         let cc = HTTP.CacheControl.parse("max-age=3600")
 
         #expect(cc.maxAge == 3600)
     }
 
-    @Test("Parse - noCache")
-    func parseNoCache() async throws {
+    @Test
+    func `Parse - noCache`() async throws {
         let cc = HTTP.CacheControl.parse("no-cache")
 
         #expect(cc.noCache == true)
     }
 
-    @Test("Parse - noStore")
-    func parseNoStore() async throws {
+    @Test
+    func `Parse - noStore`() async throws {
         let cc = HTTP.CacheControl.parse("no-store")
 
         #expect(cc.noStore == true)
     }
 
-    @Test("Parse - public")
-    func parsePublic() async throws {
+    @Test
+    func `Parse - public`() async throws {
         let cc = HTTP.CacheControl.parse("public")
 
         #expect(cc.isPublic == true)
     }
 
-    @Test("Parse - private")
-    func parsePrivate() async throws {
+    @Test
+    func `Parse - private`() async throws {
         let cc = HTTP.CacheControl.parse("private")
 
         #expect(cc.private != nil)
         #expect(cc.private! == nil) // Double optional
     }
 
-    @Test("Parse - mustRevalidate")
-    func parseMustRevalidate() async throws {
+    @Test
+    func `Parse - mustRevalidate`() async throws {
         let cc = HTTP.CacheControl.parse("must-revalidate")
 
         #expect(cc.mustRevalidate == true)
     }
 
-    @Test("Parse - mustUnderstand")
-    func parseMustUnderstand() async throws {
+    @Test
+    func `Parse - mustUnderstand`() async throws {
         let cc = HTTP.CacheControl.parse("must-understand")
 
         #expect(cc.mustUnderstand == true)
     }
 
-    @Test("Parse - sMaxage")
-    func parseSMaxage() async throws {
+    @Test
+    func `Parse - sMaxage`() async throws {
         let cc = HTTP.CacheControl.parse("s-maxage=7200")
 
         #expect(cc.sMaxage == 7200)
     }
 
-    @Test("Parse - immutable")
-    func parseImmutable() async throws {
+    @Test
+    func `Parse - immutable`() async throws {
         let cc = HTTP.CacheControl.parse("immutable")
 
         #expect(cc.immutable == true)
     }
 
-    @Test("Parse - staleWhileRevalidate")
-    func parseStaleWhileRevalidate() async throws {
+    @Test
+    func `Parse - staleWhileRevalidate`() async throws {
         let cc = HTTP.CacheControl.parse("stale-while-revalidate=120")
 
         #expect(cc.staleWhileRevalidate == 120)
     }
 
-    @Test("Parse - staleIfError")
-    func parseStaleIfError() async throws {
+    @Test
+    func `Parse - staleIfError`() async throws {
         let cc = HTTP.CacheControl.parse("stale-if-error=86400")
 
         #expect(cc.staleIfError == 86400)
     }
 
-    @Test("Parse - multiple directives")
-    func parseMultiple() async throws {
+    @Test
+    func `Parse - multiple directives`() async throws {
         let cc = HTTP.CacheControl.parse("public, max-age=3600, must-revalidate")
 
         #expect(cc.isPublic == true)
@@ -176,24 +176,24 @@ struct HTTPCacheControlTests {
         #expect(cc.mustRevalidate == true)
     }
 
-    @Test("Parse - case insensitive")
-    func parseCaseInsensitive() async throws {
+    @Test
+    func `Parse - case insensitive`() async throws {
         let cc = HTTP.CacheControl.parse("PUBLIC, MAX-AGE=3600")
 
         #expect(cc.isPublic == true)
         #expect(cc.maxAge == 3600)
     }
 
-    @Test("Parse - whitespace handling")
-    func parseWhitespace() async throws {
+    @Test
+    func `Parse - whitespace handling`() async throws {
         let cc = HTTP.CacheControl.parse("  public  ,  max-age = 3600  ")
 
         #expect(cc.isPublic == true)
         #expect(cc.maxAge == 3600)
     }
 
-    @Test("Parse - unknown directive ignored")
-    func parseUnknownDirective() async throws {
+    @Test
+    func `Parse - unknown directive ignored`() async throws {
         let cc = HTTP.CacheControl.parse("public, unknown-directive=value, max-age=3600")
 
         #expect(cc.isPublic == true)
@@ -201,8 +201,8 @@ struct HTTPCacheControlTests {
         // Unknown directive should be ignored per RFC 9111
     }
 
-    @Test("Equality")
-    func equality() async throws {
+    @Test
+    func `Equality`() async throws {
         var cc1 = HTTP.CacheControl()
         cc1.maxAge = 3600
         cc1.isPublic = true
@@ -218,8 +218,8 @@ struct HTTPCacheControlTests {
         #expect(cc1 != cc3)
     }
 
-    @Test("Hashable")
-    func hashable() async throws {
+    @Test
+    func `Hashable`() async throws {
         var set: Set<HTTP.CacheControl> = []
 
         var cc1 = HTTP.CacheControl()
@@ -238,8 +238,8 @@ struct HTTPCacheControlTests {
         #expect(set.count == 2)
     }
 
-    @Test("Codable")
-    func codable() async throws {
+    @Test
+    func `Codable`() async throws {
         let encoder = JSONEncoder()
         let decoder = JSONDecoder()
 
@@ -253,8 +253,8 @@ struct HTTPCacheControlTests {
         #expect(decoded == cc)
     }
 
-    @Test("Description")
-    func description() async throws {
+    @Test
+    func `Description`() async throws {
         var cc = HTTP.CacheControl()
         cc.maxAge = 3600
         cc.isPublic = true
@@ -265,8 +265,8 @@ struct HTTPCacheControlTests {
         #expect(description.contains("public"))
     }
 
-    @Test("Round trip - format and parse")
-    func roundTrip() async throws {
+    @Test
+    func `Round trip - format and parse`() async throws {
         var original = HTTP.CacheControl()
         original.isPublic = true
         original.maxAge = 3600
@@ -282,8 +282,8 @@ struct HTTPCacheControlTests {
         #expect(parsed.immutable == original.immutable)
     }
 
-    @Test("Request directives")
-    func requestDirectives() async throws {
+    @Test
+    func `Request directives`() async throws {
         var cc = HTTP.CacheControl()
         cc.maxAge = 600
         cc.minFresh = 120
@@ -296,8 +296,8 @@ struct HTTPCacheControlTests {
         #expect(value.contains("only-if-cached"))
     }
 
-    @Test("Response directives")
-    func responseDirectives() async throws {
+    @Test
+    func `Response directives`() async throws {
         var cc = HTTP.CacheControl()
         cc.isPublic = true
         cc.sMaxage = 7200

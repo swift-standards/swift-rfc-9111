@@ -4,19 +4,19 @@
 import Testing
 @testable import RFC_9111
 
-@Suite("HTTP.Expires Tests")
-struct HTTPExpiresTests {
+@Suite
+struct `HTTP.Expires Tests` {
 
-    @Test("Expires creation")
-    func expiresCreation() async throws {
+    @Test
+    func `Expires creation`() async throws {
         let date = Date(timeIntervalSince1970: 1445412480)
         let expires = HTTP.Expires(date: date)
 
         #expect(expires.date == date)
     }
 
-    @Test("Header value format")
-    func headerValueFormat() async throws {
+    @Test
+    func `Header value format`() async throws {
         let date = Date(timeIntervalSince1970: 784111777) // Sun, 06 Nov 1994 08:49:37 GMT
         let expires = HTTP.Expires(date: date)
 
@@ -27,8 +27,8 @@ struct HTTPExpiresTests {
         #expect(headerValue.contains("GMT"))
     }
 
-    @Test("Parse valid expires")
-    func parseValidExpires() async throws {
+    @Test
+    func `Parse valid expires`() async throws {
         let parsed = HTTP.Expires.parse("Sun, 06 Nov 1994 08:49:37 GMT")
 
         #expect(parsed != nil)
@@ -38,31 +38,31 @@ struct HTTPExpiresTests {
         #expect(diff < 1.0) // Within 1 second
     }
 
-    @Test("Parse invalid expires")
-    func parseInvalidExpires() async throws {
+    @Test
+    func `Parse invalid expires`() async throws {
         #expect(HTTP.Expires.parse("invalid") == nil)
         #expect(HTTP.Expires.parse("") == nil)
         #expect(HTTP.Expires.parse("2024-11-16") == nil) // Wrong format
     }
 
-    @Test("isExpired - past date")
-    func isExpiredPast() async throws {
+    @Test
+    func `isExpired - past date`() async throws {
         let pastDate = Date().addingTimeInterval(-3600) // 1 hour ago
         let expires = HTTP.Expires(date: pastDate)
 
         #expect(expires.isExpired())
     }
 
-    @Test("isExpired - future date")
-    func isExpiredFuture() async throws {
+    @Test
+    func `isExpired - future date`() async throws {
         let futureDate = Date().addingTimeInterval(3600) // 1 hour from now
         let expires = HTTP.Expires(date: futureDate)
 
         #expect(!expires.isExpired())
     }
 
-    @Test("isExpired - custom now")
-    func isExpiredCustomNow() async throws {
+    @Test
+    func `isExpired - custom now`() async throws {
         let expirationDate = Date(timeIntervalSince1970: 1000000)
         let expires = HTTP.Expires(date: expirationDate)
 
@@ -73,8 +73,8 @@ struct HTTPExpiresTests {
         #expect(expires.isExpired(at: afterExpiration))
     }
 
-    @Test("timeRemaining - positive")
-    func timeRemainingPositive() async throws {
+    @Test
+    func `timeRemaining - positive`() async throws {
         let futureDate = Date().addingTimeInterval(3600) // 1 hour from now
         let expires = HTTP.Expires(date: futureDate)
 
@@ -84,8 +84,8 @@ struct HTTPExpiresTests {
         #expect(remaining < 3700)
     }
 
-    @Test("timeRemaining - negative")
-    func timeRemainingNegative() async throws {
+    @Test
+    func `timeRemaining - negative`() async throws {
         let pastDate = Date().addingTimeInterval(-3600) // 1 hour ago
         let expires = HTTP.Expires(date: pastDate)
 
@@ -95,8 +95,8 @@ struct HTTPExpiresTests {
         #expect(remaining > -3700)
     }
 
-    @Test("Equality")
-    func equality() async throws {
+    @Test
+    func `Equality`() async throws {
         let date1 = Date(timeIntervalSince1970: 784111777)
         let date2 = Date(timeIntervalSince1970: 784111777)
         let date3 = Date(timeIntervalSince1970: 784111778)
@@ -109,8 +109,8 @@ struct HTTPExpiresTests {
         #expect(expires1 != expires3)
     }
 
-    @Test("Hashable")
-    func hashable() async throws {
+    @Test
+    func `Hashable`() async throws {
         var set: Set<HTTP.Expires> = []
         let date = Date(timeIntervalSince1970: 784111777)
 
@@ -121,8 +121,8 @@ struct HTTPExpiresTests {
         #expect(set.count == 2)
     }
 
-    @Test("Comparable")
-    func comparable() async throws {
+    @Test
+    func `Comparable`() async throws {
         let earlier = HTTP.Expires(date: Date(timeIntervalSince1970: 1000))
         let later = HTTP.Expires(date: Date(timeIntervalSince1970: 2000))
 
@@ -130,8 +130,8 @@ struct HTTPExpiresTests {
         #expect(later > earlier)
     }
 
-    @Test("Codable")
-    func codable() async throws {
+    @Test
+    func `Codable`() async throws {
         let encoder = JSONEncoder()
         let decoder = JSONDecoder()
 
@@ -145,8 +145,8 @@ struct HTTPExpiresTests {
         #expect(diff < 1.0) // Within 1 second
     }
 
-    @Test("Description")
-    func description() async throws {
+    @Test
+    func `Description`() async throws {
         let date = Date(timeIntervalSince1970: 784111777)
         let expires = HTTP.Expires(date: date)
 
@@ -156,8 +156,8 @@ struct HTTPExpiresTests {
         #expect(description.contains("GMT"))
     }
 
-    @Test("LosslessStringConvertible")
-    func losslessStringConvertible() async throws {
+    @Test
+    func `LosslessStringConvertible`() async throws {
         let expires = HTTP.Expires("Sun, 06 Nov 1994 08:49:37 GMT")
 
         #expect(expires != nil)
@@ -167,8 +167,8 @@ struct HTTPExpiresTests {
         #expect(diff < 1.0)
     }
 
-    @Test("Round trip - format and parse")
-    func roundTrip() async throws {
+    @Test
+    func `Round trip - format and parse`() async throws {
         let original = Date(timeIntervalSince1970: 784111777)
         let expires = HTTP.Expires(date: original)
 

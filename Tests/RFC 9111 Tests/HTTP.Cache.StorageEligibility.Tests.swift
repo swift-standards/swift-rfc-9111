@@ -5,11 +5,11 @@ import Testing
 import RFC_3986
 @testable import RFC_9111
 
-@Suite("HTTP.Cache.StorageEligibility Tests")
-struct HTTPCacheStorageEligibilityTests {
+@Suite
+struct `HTTP.Cache.StorageEligibility Tests` {
 
-    @Test("Eligible - GET request with max-age")
-    func eligibleGETWithMaxAge() async throws {
+    @Test
+    func `Eligible - GET request with max-age`() async throws {
         let request = try RFC_9110.Request(
             method: .get,
             scheme: RFC_3986.URI.Scheme("http"),
@@ -34,8 +34,8 @@ struct HTTPCacheStorageEligibilityTests {
         #expect(result.isEligible)
     }
 
-    @Test("Ineligible - no-store directive")
-    func ineligibleNoStore() async throws {
+    @Test
+    func `Ineligible - no-store directive`() async throws {
         let request = try RFC_9110.Request(
             method: .get,
             scheme: RFC_3986.URI.Scheme("http"),
@@ -60,8 +60,8 @@ struct HTTPCacheStorageEligibilityTests {
         #expect(!result.isEligible)
     }
 
-    @Test("Ineligible - private in shared cache")
-    func ineligiblePrivateShared() async throws {
+    @Test
+    func `Ineligible - private in shared cache`() async throws {
         let request = try RFC_9110.Request(
             method: .get,
             scheme: RFC_3986.URI.Scheme("http"),
@@ -87,8 +87,8 @@ struct HTTPCacheStorageEligibilityTests {
         #expect(!result.isEligible)
     }
 
-    @Test("Eligible - private in private cache")
-    func eligiblePrivatePrivate() async throws {
+    @Test
+    func `Eligible - private in private cache`() async throws {
         let request = try RFC_9110.Request(
             method: .get,
             scheme: RFC_3986.URI.Scheme("http"),
@@ -114,8 +114,8 @@ struct HTTPCacheStorageEligibilityTests {
         #expect(result.isEligible)
     }
 
-    @Test("Eligible - heuristically cacheable status")
-    func eligibleHeuristicallyCacheable() async throws {
+    @Test
+    func `Eligible - heuristically cacheable status`() async throws {
         let request = try RFC_9110.Request(
             method: .get,
             scheme: RFC_3986.URI.Scheme("http"),
@@ -139,8 +139,8 @@ struct HTTPCacheStorageEligibilityTests {
         #expect(result.isEligible)
     }
 
-    @Test("Ineligible - informational status")
-    func ineligibleInformationalStatus() async throws {
+    @Test
+    func `Ineligible - informational status`() async throws {
         let request = try RFC_9110.Request(
             method: .get,
             scheme: RFC_3986.URI.Scheme("http"),
@@ -164,8 +164,8 @@ struct HTTPCacheStorageEligibilityTests {
         #expect(!result.isEligible)
     }
 
-    @Test("Eligible - authorized request with public directive")
-    func eligibleAuthorizedWithPublic() async throws {
+    @Test
+    func `Eligible - authorized request with public directive`() async throws {
         let request = try RFC_9110.Request(
             method: .get,
             scheme: RFC_3986.URI.Scheme("http"),
@@ -193,8 +193,8 @@ struct HTTPCacheStorageEligibilityTests {
         #expect(result.isEligible)
     }
 
-    @Test("Ineligible - authorized request without sharing permission")
-    func ineligibleAuthorizedWithoutPermission() async throws {
+    @Test
+    func `Ineligible - authorized request without sharing permission`() async throws {
         let request = try RFC_9110.Request(
             method: .get,
             scheme: RFC_3986.URI.Scheme("http"),

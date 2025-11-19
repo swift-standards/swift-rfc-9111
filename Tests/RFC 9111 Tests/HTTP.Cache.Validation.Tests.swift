@@ -5,11 +5,11 @@ import Testing
 import RFC_3986
 @testable import RFC_9111
 
-@Suite("HTTP.Cache.Validation Tests")
-struct HTTPCacheValidationTests {
+@Suite
+struct `HTTP.Cache.Validation Tests` {
 
-    @Test("Generate validation request with ETag")
-    func generateValidationRequestWithETag() async throws {
+    @Test
+    func `Generate validation request with ETag`() async throws {
         let storedResponse = RFC_9110.Response(
             status: RFC_9110.Status(200),
             headers: [
@@ -36,8 +36,8 @@ struct HTTPCacheValidationTests {
         #expect(ifNoneMatch?.value.rawValue == "\"abc123\"")
     }
 
-    @Test("Generate validation request with Last-Modified")
-    func generateValidationRequestWithLastModified() async throws {
+    @Test
+    func `Generate validation request with Last-Modified`() async throws {
         let storedResponse = RFC_9110.Response(
             status: RFC_9110.Status(200),
             headers: [
@@ -64,8 +64,8 @@ struct HTTPCacheValidationTests {
         #expect(ifModifiedSince?.value.rawValue == "Wed, 21 Oct 2015 07:28:00 GMT")
     }
 
-    @Test("Generate validation request prefers ETag over Last-Modified")
-    func generateValidationRequestPrefersETag() async throws {
+    @Test
+    func `Generate validation request prefers ETag over Last-Modified`() async throws {
         let storedResponse = RFC_9110.Response(
             status: RFC_9110.Status(200),
             headers: [
@@ -95,8 +95,8 @@ struct HTTPCacheValidationTests {
         #expect(ifModifiedSince == nil)  // Should not include If-Modified-Since when ETag is present
     }
 
-    @Test("Process 304 Not Modified response")
-    func process304Response() async throws {
+    @Test
+    func `Process 304 Not Modified response`() async throws {
         let storedResponse = RFC_9110.Response(
             status: RFC_9110.Status(200),
             headers: [
@@ -140,8 +140,8 @@ struct HTTPCacheValidationTests {
         }
     }
 
-    @Test("Process full response")
-    func processFullResponse() async throws {
+    @Test
+    func `Process full response`() async throws {
         let storedResponse = RFC_9110.Response(
             status: RFC_9110.Status(200),
             headers: [
@@ -175,8 +175,8 @@ struct HTTPCacheValidationTests {
         }
     }
 
-    @Test("Process server error response")
-    func processServerErrorResponse() async throws {
+    @Test
+    func `Process server error response`() async throws {
         let storedResponse = RFC_9110.Response(
             status: RFC_9110.Status(200),
             headers: [],
@@ -203,8 +203,8 @@ struct HTTPCacheValidationTests {
         }
     }
 
-    @Test("Process client error response")
-    func processClientErrorResponse() async throws {
+    @Test
+    func `Process client error response`() async throws {
         let storedResponse = RFC_9110.Response(
             status: RFC_9110.Status(200),
             headers: [],
