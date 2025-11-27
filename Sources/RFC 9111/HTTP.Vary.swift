@@ -123,7 +123,7 @@ extension RFC_9110 {
         /// // nil
         /// ```
         public static func parse(_ headerValue: String) -> Vary? {
-            let trimmed = headerValue.trimming(.whitespaces)
+            let trimmed = headerValue.trimming(.ascii.whitespaces)
 
             if trimmed == "*" {
                 return .all
@@ -131,7 +131,7 @@ extension RFC_9110 {
 
             let names = trimmed
                 .components(separatedBy: ",")
-                .map { $0.trimming(.whitespaces) }
+                .map { $0.trimming(.ascii.whitespaces) }
                 .filter { !$0.isEmpty }
 
             guard !names.isEmpty else {

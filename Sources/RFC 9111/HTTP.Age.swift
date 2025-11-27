@@ -81,7 +81,7 @@ extension RFC_9110 {
         /// Age.parse("-5")         // nil (negative ages invalid)
         /// ```
         public static func parse(_ headerValue: String) -> Age? {
-            let trimmed = headerValue.trimming(.whitespaces)
+            let trimmed = headerValue.trimming(.ascii.whitespaces)
             guard let seconds = Int(trimmed), seconds >= 0 else {
                 return nil
             }

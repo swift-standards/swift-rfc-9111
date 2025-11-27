@@ -237,27 +237,27 @@ extension RFC_9110 {
 
             let directives = headerValue
                 .components(separatedBy: ",")
-                .map { $0.trimming(.whitespaces) }
+                .map { $0.trimming(.ascii.whitespaces) }
 
             for directive in directives {
                 let parts = directive.components(separatedBy: "=")
-                let name = parts[0].trimming(.whitespaces).lowercased()
+                let name = parts[0].trimming(.ascii.whitespaces).lowercased()
 
                 switch name {
                 case "max-age":
-                    if parts.count > 1, let value = Int(parts[1].trimming(.whitespaces)) {
+                    if parts.count > 1, let value = Int(parts[1].trimming(.ascii.whitespaces)) {
                         cacheControl.maxAge = value
                     }
 
                 case "max-stale":
-                    if parts.count > 1, let value = Int(parts[1].trimming(.whitespaces)) {
+                    if parts.count > 1, let value = Int(parts[1].trimming(.ascii.whitespaces)) {
                         cacheControl.maxStale = .some(.some(value))
                     } else {
                         cacheControl.maxStale = .some(nil)
                     }
 
                 case "min-fresh":
-                    if parts.count > 1, let value = Int(parts[1].trimming(.whitespaces)) {
+                    if parts.count > 1, let value = Int(parts[1].trimming(.ascii.whitespaces)) {
                         cacheControl.minFresh = value
                     }
 
@@ -282,10 +282,10 @@ extension RFC_9110 {
                 case "private":
                     if parts.count > 1 {
                         let fieldNames = parts[1]
-                            .trimming(.whitespaces)
+                            .trimming(.ascii.whitespaces)
                             .trimmingCharacters(in: CharacterSet(charactersIn: "\""))
                             .components(separatedBy: ",")
-                            .map { $0.trimming(.whitespaces) }
+                            .map { $0.trimming(.ascii.whitespaces) }
                         cacheControl.private = .some(.some(fieldNames))
                     } else {
                         cacheControl.private = .some(nil)
@@ -298,7 +298,7 @@ extension RFC_9110 {
                     cacheControl.isPublic = true
 
                 case "s-maxage":
-                    if parts.count > 1, let value = Int(parts[1].trimming(.whitespaces)) {
+                    if parts.count > 1, let value = Int(parts[1].trimming(.ascii.whitespaces)) {
                         cacheControl.sMaxage = value
                     }
 
@@ -306,12 +306,12 @@ extension RFC_9110 {
                     cacheControl.immutable = true
 
                 case "stale-while-revalidate":
-                    if parts.count > 1, let value = Int(parts[1].trimming(.whitespaces)) {
+                    if parts.count > 1, let value = Int(parts[1].trimming(.ascii.whitespaces)) {
                         cacheControl.staleWhileRevalidate = value
                     }
 
                 case "stale-if-error":
-                    if parts.count > 1, let value = Int(parts[1].trimming(.whitespaces)) {
+                    if parts.count > 1, let value = Int(parts[1].trimming(.ascii.whitespaces)) {
                         cacheControl.staleIfError = value
                     }
 
