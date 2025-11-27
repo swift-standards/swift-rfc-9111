@@ -45,7 +45,7 @@ extension RFC_9110.Cache {
             for header in headers where header.name.rawValue.lowercased() == "connection" {
                 let values = header.value.rawValue.split(separator: ",")
                 for value in values {
-                    let trimmed = value.trimming(.whitespaces).lowercased()
+                    let trimmed = value.trimming(.ascii.whitespaces).lowercased()
                     additionalHopByHop.insert(trimmed)
                 }
             }
@@ -103,13 +103,13 @@ extension RFC_9110.Cache {
             let varyValue = varyHeader.value.rawValue
 
             // RFC 9111 Section 4.1: "Vary: *" means never match
-            if varyValue.trimming(.whitespaces) == "*" {
+            if varyValue.trimming(.ascii.whitespaces) == "*" {
                 return false
             }
 
             // Parse Vary field names
             let varyFields = varyValue.split(separator: ",").map {
-                $0.trimming(.whitespaces).lowercased()
+                $0.trimming(.ascii.whitespaces).lowercased()
             }
 
             // Check each varied field

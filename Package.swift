@@ -32,7 +32,7 @@ let package = Package(
             ]
         ),
         .testTarget(
-            name: "RFC 9111 Tests",
+            name: "RFC 9111".tests,
             dependencies: ["RFC 9111"],
             swiftSettings: [
                 .swiftLanguageMode(.v6),
@@ -44,10 +44,16 @@ let package = Package(
     swiftLanguageModes: [.v6]
 )
 
-for target in package.targets {
-    var settings = target.swiftSettings ?? []
-    settings.append(
+extension String {
+    var tests: Self { self + " Tests" }
+    var foundation: Self { self + " Foundation" }
+}
+
+for target in package.targets where ![.system, .binary, .plugin].contains(target.type) {
+    let existing = target.swiftSettings ?? []
+    target.swiftSettings = existing + [
+        .enableUpcomingFeature("ExistentialAny"),
+        .enableUpcomingFeature("InternalImportsByDefault"),
         .enableUpcomingFeature("MemberImportVisibility")
-    )
-    target.swiftSettings = settings
+    ]
 }
