@@ -24,21 +24,11 @@ let package = Package(
             name: "RFC 9111",
             dependencies: [
                 .product(name: "RFC 9110", package: "swift-rfc-9110")
-            ],
-            swiftSettings: [
-                .swiftLanguageMode(.v6),
-                .enableUpcomingFeature("ExistentialAny"),
-                .enableExperimentalFeature("StrictConcurrency")
             ]
         ),
         .testTarget(
             name: "RFC 9111".tests,
-            dependencies: ["RFC 9111"],
-            swiftSettings: [
-                .swiftLanguageMode(.v6),
-                .enableUpcomingFeature("ExistentialAny"),
-                .enableExperimentalFeature("StrictConcurrency")
-            ]
+            dependencies: ["RFC 9111"]
         )
     ],
     swiftLanguageModes: [.v6]
