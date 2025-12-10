@@ -88,8 +88,7 @@ extension RFC_9110 {
             if let expiresHeader = response.headers["Expires"]?.first?.rawValue,
                 let expires = Expires.parse(expiresHeader),
                 let dateHeader = response.headers["Date"]?.first?.rawValue,
-                let date = HTTP.Date.parseHTTP(dateHeader)
-            {
+                let date = HTTP.Date.parseHTTP(dateHeader) {
                 let lifetime = expires.timestamp.timeIntervalSince(date)
                 return max(0, lifetime)
             }
@@ -163,8 +162,7 @@ extension RFC_9110 {
             // Age from Age header
             var ageValue: Double = 0
             if let ageHeader = response.headers["Age"]?.first?.rawValue,
-                let age = Age.parse(ageHeader)
-            {
+                let age = Age.parse(ageHeader) {
                 ageValue = Double(age.seconds)
             }
 
