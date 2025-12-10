@@ -2,6 +2,7 @@
 // swift-rfc-9111
 
 import Testing
+
 @testable import RFC_9111
 
 @Suite
@@ -48,8 +49,8 @@ struct `HTTP.Age Tests` {
     func `Parse invalid age`() async throws {
         #expect(HTTP.Age.parse("invalid") == nil)
         #expect(HTTP.Age.parse("") == nil)
-        #expect(HTTP.Age.parse("-5") == nil) // Negative ages invalid
-        #expect(HTTP.Age.parse("120.5") == nil) // No decimals
+        #expect(HTTP.Age.parse("-5") == nil)  // Negative ages invalid
+        #expect(HTTP.Age.parse("120.5") == nil)  // No decimals
     }
 
     @Test
@@ -67,7 +68,7 @@ struct `HTTP.Age Tests` {
         var set: Set<HTTP.Age> = []
 
         set.insert(HTTP.Age(seconds: 120))
-        set.insert(HTTP.Age(seconds: 120)) // Duplicate
+        set.insert(HTTP.Age(seconds: 120))  // Duplicate
         set.insert(HTTP.Age(seconds: 121))
 
         #expect(set.count == 2)

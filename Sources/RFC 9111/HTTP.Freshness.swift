@@ -6,8 +6,8 @@
 //
 // Freshness calculation utilities for determining if cached responses are fresh
 
-import RFC_9110
 import RFC_5322
+import RFC_9110
 
 extension RFC_9110 {
     /// Freshness calculation utilities (RFC 9111 Section 4.2)
@@ -86,9 +86,10 @@ extension RFC_9110 {
 
             // Expires header
             if let expiresHeader = response.headers["Expires"]?.first?.rawValue,
-               let expires = Expires.parse(expiresHeader),
-               let dateHeader = response.headers["Date"]?.first?.rawValue,
-               let date = HTTP.Date.parseHTTP(dateHeader) {
+                let expires = Expires.parse(expiresHeader),
+                let dateHeader = response.headers["Date"]?.first?.rawValue,
+                let date = HTTP.Date.parseHTTP(dateHeader)
+            {
                 let lifetime = expires.timestamp.timeIntervalSince(date)
                 return max(0, lifetime)
             }
@@ -118,9 +119,10 @@ extension RFC_9110 {
         /// ```
         public static func calculateHeuristicFreshness(response: HTTP.Response) -> Double {
             guard let dateHeader = response.headers["Date"]?.first?.rawValue,
-                  let date = HTTP.Date.parseHTTP(dateHeader),
-                  let lastModifiedHeader = response.headers["Last-Modified"]?.first?.rawValue,
-                  let lastModified = HTTP.Date.parseHTTP(lastModifiedHeader) else {
+                let date = HTTP.Date.parseHTTP(dateHeader),
+                let lastModifiedHeader = response.headers["Last-Modified"]?.first?.rawValue,
+                let lastModified = HTTP.Date.parseHTTP(lastModifiedHeader)
+            else {
                 return 0
             }
 
@@ -161,13 +163,15 @@ extension RFC_9110 {
             // Age from Age header
             var ageValue: Double = 0
             if let ageHeader = response.headers["Age"]?.first?.rawValue,
-               let age = Age.parse(ageHeader) {
+                let age = Age.parse(ageHeader)
+            {
                 ageValue = Double(age.seconds)
             }
 
             // Date header value
             guard let dateHeader = response.headers["Date"]?.first?.rawValue,
-                  let date = HTTP.Date.parseHTTP(dateHeader) else {
+                let date = HTTP.Date.parseHTTP(dateHeader)
+            else {
                 return ageValue
             }
 

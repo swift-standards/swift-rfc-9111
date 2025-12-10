@@ -129,7 +129,8 @@ extension RFC_9110 {
                 return .all
             }
 
-            let names = trimmed
+            let names =
+                trimmed
                 .components(separatedBy: ",")
                 .map { $0.trimming(.ascii.whitespaces) }
                 .filter { !$0.isEmpty }
@@ -192,7 +193,7 @@ extension RFC_9110 {
             cachedRequestHeaders: [String: String]
         ) -> Bool {
             if variesOnAllAspects {
-                return false // Vary: * never matches
+                return false  // Vary: * never matches
             }
 
             // Check that all varied fields match
