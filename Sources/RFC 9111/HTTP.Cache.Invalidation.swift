@@ -39,11 +39,15 @@ extension RFC_9110.Cache {
             // RFC 9111 Section 4.4: "A cache MAY invalidate the URI(s) in the Location
             // and Content-Location response header fields (if present) when the origin
             // of that URI is the same as the request URI"
-            if let locationURI = getLocationURI(from: response), isSameOrigin(locationURI, as: request) {
+            if let locationURI = getLocationURI(from: response),
+                isSameOrigin(locationURI, as: request)
+            {
                 targets.append(.location(uri: locationURI))
             }
 
-            if let contentLocationURI = getContentLocationURI(from: response), isSameOrigin(contentLocationURI, as: request) {
+            if let contentLocationURI = getContentLocationURI(from: response),
+                isSameOrigin(contentLocationURI, as: request)
+            {
                 targets.append(.contentLocation(uri: contentLocationURI))
             }
 
@@ -88,12 +92,14 @@ extension RFC_9110.Cache {
 
         /// Extract Content-Location header URI
         private static func getContentLocationURI(from response: RFC_9110.Response) -> String? {
-            response.headers.first { $0.name.rawValue.lowercased() == "content-location" }?.value.rawValue
+            response.headers.first { $0.name.rawValue.lowercased() == "content-location" }?.value
+                .rawValue
         }
 
         /// Check if URI is same origin as request
         /// RFC 9111 Section 4.4: Only invalidate same-origin URIs
-        private static func isSameOrigin(_ uriString: String, as request: RFC_9110.Request) -> Bool {
+        private static func isSameOrigin(_ uriString: String, as request: RFC_9110.Request) -> Bool
+        {
             // Parse the URI
             guard let uri = try? RFC_3986.URI(uriString) else {
                 return false
@@ -165,8 +171,8 @@ extension RFC_9110.Cache {
             public var uri: String {
                 switch self {
                 case .requestTarget(let uri),
-                     .location(let uri),
-                     .contentLocation(let uri):
+                    .location(let uri),
+                    .contentLocation(let uri):
                     return uri
                 }
             }

@@ -111,16 +111,28 @@ extension RFC_9110.Cache {
         // MARK: - Helper Methods
 
         /// Get Cache-Control from response
-        private static func getCacheControl(from response: RFC_9110.Response) -> RFC_9110.CacheControl? {
-            guard let header = response.headers.first(where: { $0.name.rawValue.lowercased() == "cache-control" }) else {
+        private static func getCacheControl(
+            from response: RFC_9110.Response
+        ) -> RFC_9110.CacheControl? {
+            guard
+                let header = response.headers.first(where: {
+                    $0.name.rawValue.lowercased() == "cache-control"
+                })
+            else {
                 return nil
             }
             return RFC_9110.CacheControl.parse(header.value.rawValue)
         }
 
         /// Get Cache-Control from request
-        private static func getCacheControl(from request: RFC_9110.Request) -> RFC_9110.CacheControl? {
-            guard let header = request.headers.first(where: { $0.name.rawValue.lowercased() == "cache-control" }) else {
+        private static func getCacheControl(
+            from request: RFC_9110.Request
+        ) -> RFC_9110.CacheControl? {
+            guard
+                let header = request.headers.first(where: {
+                    $0.name.rawValue.lowercased() == "cache-control"
+                })
+            else {
                 return nil
             }
             return RFC_9110.CacheControl.parse(header.value.rawValue)

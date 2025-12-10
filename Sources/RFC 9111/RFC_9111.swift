@@ -6,6 +6,8 @@
 //
 // HTTP cache mechanics including storage, retrieval, validation, and freshness
 
+// Re-export RFC 9110 for convenience
+@_exported import RFC_9110
 
 /// RFC 9111: HTTP Caching
 ///
@@ -23,6 +25,3 @@
 ///
 /// - [RFC 9111: HTTP Caching](https://www.rfc-editor.org/rfc/rfc9111.html)
 public enum RFC_9111 {}
-
-// Re-export RFC 9110 for convenience
-@_exported import RFC_9110

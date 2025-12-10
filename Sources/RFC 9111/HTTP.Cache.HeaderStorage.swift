@@ -1,7 +1,6 @@
 // HTTP.Cache.HeaderStorage.swift
 // swift-rfc-9111
 
-public 
 extension RFC_9110.Cache {
     /// Header storage rules implementing RFC 9111 Section 3
     public enum HeaderStorage {
@@ -13,7 +12,9 @@ extension RFC_9110.Cache {
         ///
         /// - Parameter response: The response to cache
         /// - Returns: Headers that should be stored
-        public static func headersToStore(from response: RFC_9110.Response) -> [RFC_9110.Header.Field] {
+        public static func headersToStore(
+            from response: RFC_9110.Response
+        ) -> [RFC_9110.Header.Field] {
             var headers = Array(response.headers)
 
             // RFC 9111 Section 3.2: Remove hop-by-hop headers
@@ -27,7 +28,9 @@ extension RFC_9110.Cache {
 
         /// Remove hop-by-hop headers that must not be cached
         /// RFC 9110 Section 7.6.1: Connection-specific header fields
-        private static func removeHopByHopHeaders(_ headers: [RFC_9110.Header.Field]) -> [RFC_9110.Header.Field] {
+        private static func removeHopByHopHeaders(
+            _ headers: [RFC_9110.Header.Field]
+        ) -> [RFC_9110.Header.Field] {
             // RFC 9110 Section 7.6.1: Hop-by-hop headers
             let hopByHopHeaders = [
                 "connection",
@@ -37,7 +40,7 @@ extension RFC_9110.Cache {
                 "te",
                 "trailer",
                 "transfer-encoding",
-                "upgrade"
+                "upgrade",
             ]
 
             // Also check Connection header for additional hop-by-hop headers
@@ -52,13 +55,16 @@ extension RFC_9110.Cache {
 
             return headers.filter { header in
                 let headerName = header.name.rawValue.lowercased()
-                return !hopByHopHeaders.contains(headerName) && !additionalHopByHop.contains(headerName)
+                return !hopByHopHeaders.contains(headerName)
+                    && !additionalHopByHop.contains(headerName)
             }
         }
 
         /// Remove Warning headers with 1xx warn-codes
         /// RFC 9111 Section 5.5: Warning
-        private static func removeWarningsWith1xxCodes(_ headers: [RFC_9110.Header.Field]) -> [RFC_9110.Header.Field] {
+        private static func removeWarningsWith1xxCodes(
+            _ headers: [RFC_9110.Header.Field]
+        ) -> [RFC_9110.Header.Field] {
             // RFC 9111 Section 5.5: "A cache MUST delete any Warning header fields
             // that have a warn-code of 1xx"
             return headers.filter { header in
@@ -70,7 +76,8 @@ extension RFC_9110.Cache {
                 let value = header.value.rawValue
                 let components = value.split(separator: " ", maxSplits: 1)
                 guard let warnCodeStr = components.first,
-                      let warnCode = Int(warnCodeStr) else {
+                    let warnCode = Int(warnCodeStr)
+                else {
                     return true  // Keep if can't parse
                 }
 
@@ -95,7 +102,11 @@ extension RFC_9110.Cache {
             currentRequest: RFC_9110.Request
         ) -> Bool {
             // Get Vary header from stored response
-            guard let varyHeader = storedResponse.headers.first(where: { $0.name.rawValue.lowercased() == "vary" }) else {
+            guard
+                let varyHeader = storedResponse.headers.first(where: {
+                    $0.name.rawValue.lowercased() == "vary"
+                })
+            else {
                 // No Vary header - any request matches
                 return true
             }
@@ -127,7 +138,10 @@ extension RFC_9110.Cache {
         }
 
         /// Get all values for a header field name
-        private static func getHeaderValues(_ name: String, from request: RFC_9110.Request) -> [String] {
+        private static func getHeaderValues(
+            _ name: String,
+            from request: RFC_9110.Request
+        ) -> [String] {
             let lowerName = name.lowercased()
             return request.headers
                 .filter { $0.name.rawValue.lowercased() == lowerName }

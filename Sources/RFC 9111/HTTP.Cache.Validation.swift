@@ -41,7 +41,10 @@ extension RFC_9110.Cache {
                     headers.removeAll { $0.name.rawValue.lowercased() == "if-modified-since" }
 
                     // Add If-Modified-Since
-                    if let field = try? RFC_9110.Header.Field(name: "If-Modified-Since", value: lastModified) {
+                    if let field = try? RFC_9110.Header.Field(
+                        name: "If-Modified-Since",
+                        value: lastModified
+                    ) {
                         headers.append(field)
                     }
                 }
@@ -129,7 +132,8 @@ extension RFC_9110.Cache {
 
         /// Extract Last-Modified from response
         private static func getLastModified(from response: RFC_9110.Response) -> String? {
-            response.headers.first { $0.name.rawValue.lowercased() == "last-modified" }?.value.rawValue
+            response.headers.first { $0.name.rawValue.lowercased() == "last-modified" }?.value
+                .rawValue
         }
 
         // MARK: - Result Types

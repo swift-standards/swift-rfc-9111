@@ -76,8 +76,14 @@ extension RFC_9110.Cache {
         }
 
         /// Get Cache-Control from response
-        private static func getCacheControl(from response: RFC_9110.Response) -> RFC_9110.CacheControl? {
-            guard let header = response.headers.first(where: { $0.name.rawValue.lowercased() == "cache-control" }) else {
+        private static func getCacheControl(
+            from response: RFC_9110.Response
+        ) -> RFC_9110.CacheControl? {
+            guard
+                let header = response.headers.first(where: {
+                    $0.name.rawValue.lowercased() == "cache-control"
+                })
+            else {
                 return nil
             }
             return RFC_9110.CacheControl.parse(header.value.rawValue)
@@ -95,9 +101,8 @@ extension RFC_9110.Cache {
                 return false
             }
 
-            return cacheControl.isPublic ||
-                   cacheControl.mustRevalidate ||
-                   cacheControl.sMaxage != nil
+            return cacheControl.isPublic || cacheControl.mustRevalidate
+                || cacheControl.sMaxage != nil
         }
 
         /// Check if response has a cacheability indicator
@@ -112,10 +117,9 @@ extension RFC_9110.Cache {
         private static func hasCacheabilityIndicator(_ response: RFC_9110.Response) -> Bool {
             // Check for cache directives
             if let cacheControl = getCacheControl(from: response) {
-                if cacheControl.isPublic ||
-                   cacheControl.private != nil ||
-                   cacheControl.maxAge != nil ||
-                   cacheControl.sMaxage != nil {
+                if cacheControl.isPublic || cacheControl.private != nil
+                    || cacheControl.maxAge != nil || cacheControl.sMaxage != nil
+                {
                     return true
                 }
             }

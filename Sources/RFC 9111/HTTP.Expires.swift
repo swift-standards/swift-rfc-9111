@@ -7,8 +7,8 @@
 // The Expires header field gives the date/time after which the response
 // is considered stale
 
-import RFC_9110
 import RFC_5322
+import RFC_9110
 
 extension RFC_9110 {
     /// HTTP Expires header (RFC 9111 Section 5.3)

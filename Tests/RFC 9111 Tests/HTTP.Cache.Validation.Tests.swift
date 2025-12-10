@@ -1,8 +1,9 @@
 // HTTP.Cache.Validation.Tests.swift
 // swift-rfc-9111
 
-import Testing
 import RFC_3986
+import Testing
+
 @testable import RFC_9111
 
 @Suite
@@ -14,7 +15,7 @@ struct `HTTP.Cache.Validation Tests` {
             status: RFC_9110.Status(200),
             headers: [
                 try RFC_9110.Header.Field(name: "ETag", value: "\"abc123\""),
-                try RFC_9110.Header.Field(name: "Content-Type", value: "text/plain")
+                try RFC_9110.Header.Field(name: "Content-Type", value: "text/plain"),
             ],
             body: Data("test".utf8)
         )
@@ -32,7 +33,9 @@ struct `HTTP.Cache.Validation Tests` {
             originalRequest: originalRequest
         )
 
-        let ifNoneMatch = validationRequest.headers.first { $0.name.rawValue.lowercased() == "if-none-match" }
+        let ifNoneMatch = validationRequest.headers.first {
+            $0.name.rawValue.lowercased() == "if-none-match"
+        }
         #expect(ifNoneMatch?.value.rawValue == "\"abc123\"")
     }
 
@@ -41,8 +44,11 @@ struct `HTTP.Cache.Validation Tests` {
         let storedResponse = RFC_9110.Response(
             status: RFC_9110.Status(200),
             headers: [
-                try RFC_9110.Header.Field(name: "Last-Modified", value: "Wed, 21 Oct 2015 07:28:00 GMT"),
-                try RFC_9110.Header.Field(name: "Content-Type", value: "text/plain")
+                try RFC_9110.Header.Field(
+                    name: "Last-Modified",
+                    value: "Wed, 21 Oct 2015 07:28:00 GMT"
+                ),
+                try RFC_9110.Header.Field(name: "Content-Type", value: "text/plain"),
             ],
             body: Data("test".utf8)
         )
@@ -60,7 +66,9 @@ struct `HTTP.Cache.Validation Tests` {
             originalRequest: originalRequest
         )
 
-        let ifModifiedSince = validationRequest.headers.first { $0.name.rawValue.lowercased() == "if-modified-since" }
+        let ifModifiedSince = validationRequest.headers.first {
+            $0.name.rawValue.lowercased() == "if-modified-since"
+        }
         #expect(ifModifiedSince?.value.rawValue == "Wed, 21 Oct 2015 07:28:00 GMT")
     }
 
@@ -70,7 +78,10 @@ struct `HTTP.Cache.Validation Tests` {
             status: RFC_9110.Status(200),
             headers: [
                 try RFC_9110.Header.Field(name: "ETag", value: "\"abc123\""),
-                try RFC_9110.Header.Field(name: "Last-Modified", value: "Wed, 21 Oct 2015 07:28:00 GMT")
+                try RFC_9110.Header.Field(
+                    name: "Last-Modified",
+                    value: "Wed, 21 Oct 2015 07:28:00 GMT"
+                ),
             ],
             body: Data("test".utf8)
         )
@@ -88,8 +99,12 @@ struct `HTTP.Cache.Validation Tests` {
             originalRequest: originalRequest
         )
 
-        let ifNoneMatch = validationRequest.headers.first { $0.name.rawValue.lowercased() == "if-none-match" }
-        let ifModifiedSince = validationRequest.headers.first { $0.name.rawValue.lowercased() == "if-modified-since" }
+        let ifNoneMatch = validationRequest.headers.first {
+            $0.name.rawValue.lowercased() == "if-none-match"
+        }
+        let ifModifiedSince = validationRequest.headers.first {
+            $0.name.rawValue.lowercased() == "if-modified-since"
+        }
 
         #expect(ifNoneMatch?.value.rawValue == "\"abc123\"")
         #expect(ifModifiedSince == nil)  // Should not include If-Modified-Since when ETag is present
@@ -102,7 +117,7 @@ struct `HTTP.Cache.Validation Tests` {
             headers: [
                 try RFC_9110.Header.Field(name: "ETag", value: "\"abc123\""),
                 try RFC_9110.Header.Field(name: "Content-Type", value: "text/plain"),
-                try RFC_9110.Header.Field(name: "Date", value: "Wed, 21 Oct 2015 07:28:00 GMT")
+                try RFC_9110.Header.Field(name: "Date", value: "Wed, 21 Oct 2015 07:28:00 GMT"),
             ],
             body: Data("original body".utf8)
         )
@@ -112,7 +127,7 @@ struct `HTTP.Cache.Validation Tests` {
             headers: [
                 try RFC_9110.Header.Field(name: "ETag", value: "\"abc123\""),
                 try RFC_9110.Header.Field(name: "Date", value: "Thu, 22 Oct 2015 07:28:00 GMT"),
-                try RFC_9110.Header.Field(name: "Cache-Control", value: "max-age=7200")
+                try RFC_9110.Header.Field(name: "Cache-Control", value: "max-age=7200"),
             ],
             body: nil
         )
@@ -132,7 +147,9 @@ struct `HTTP.Cache.Validation Tests` {
             #expect(date?.value.rawValue == "Thu, 22 Oct 2015 07:28:00 GMT")
 
             // Should have new Cache-Control
-            let cacheControl = updatedResponse.headers.first { $0.name.rawValue.lowercased() == "cache-control" }
+            let cacheControl = updatedResponse.headers.first {
+                $0.name.rawValue.lowercased() == "cache-control"
+            }
             #expect(cacheControl?.value.rawValue == "max-age=7200")
 
         default:
@@ -154,7 +171,7 @@ struct `HTTP.Cache.Validation Tests` {
             status: RFC_9110.Status(200),
             headers: [
                 try RFC_9110.Header.Field(name: "ETag", value: "\"def456\""),
-                try RFC_9110.Header.Field(name: "Content-Type", value: "text/plain")
+                try RFC_9110.Header.Field(name: "Content-Type", value: "text/plain"),
             ],
             body: Data("new body".utf8)
         )

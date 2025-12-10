@@ -235,7 +235,8 @@ extension RFC_9110 {
         public static func parse(_ headerValue: String) -> CacheControl {
             var cacheControl = CacheControl()
 
-            let directives = headerValue
+            let directives =
+                headerValue
                 .components(separatedBy: ",")
                 .map { $0.trimming(.ascii.whitespaces) }
 
