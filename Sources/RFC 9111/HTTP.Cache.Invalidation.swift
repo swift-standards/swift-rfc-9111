@@ -1,4 +1,3 @@
-}
 // HTTP.Cache.Invalidation.swift
 // swift-rfc-9111
 
@@ -183,3 +182,4 @@ extension RFC_9110.Cache {
             }
         }
     }
+}
