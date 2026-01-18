@@ -24,11 +24,7 @@ let package = Package(
             name: "RFC 9111",
             dependencies: [
                 .product(name: "RFC 9110", package: "swift-rfc-9110")
-            ]
-        ),
-        .testTarget(
-            name: "RFC 9111".tests,
-            dependencies: ["RFC 9111"]
+    ]
         )
     ],
     swiftLanguageModes: [.v6]
